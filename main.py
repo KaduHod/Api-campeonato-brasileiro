@@ -1,18 +1,12 @@
 # Criar api REST que retorna a tabela do brasileirao com flesk
 from flask import Flask, Response
-from src.service import tabelaBrasileirao
+from src.service import getTabelaBrasileirao
 import json
 
 app = Flask(__name__)
 
-@app.route("/")
-def hello_world():
-    return "<p>Hello world</p>"
-
-@app.route("/tabela-brasileirao")
+@app.route("/tabela-brasileirao/hoje")
 def tabela():
-    tabela = tabelaBrasileirao.main()
+    tabela = getTabelaBrasileirao.main()
     jsonData = json.dumps(tabela)
-    
-    
     return jsonData, 200, {'Content-Type': 'application/json;' }
