@@ -1,5 +1,5 @@
 # Criar api REST que retorna a tabela do brasileirao com flesk
-from flask import Flask, Response
+from flask import Flask
 from src.service import getTabelaBrasileirao
 import json
 

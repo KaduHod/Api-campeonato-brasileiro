@@ -31,7 +31,6 @@ def getScores(tabela):
     tbody = tabela.find('tbody')
     linhas = tbody.find_all('tr')
     scores = []
-    
     for linha in linhas:
         scores.append(getColunms(linha))
     return scores 
