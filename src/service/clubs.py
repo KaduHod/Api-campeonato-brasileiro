@@ -29,6 +29,8 @@ def getClubsIds(options):
             continue
         valueBrute = soup['value']
         id = getIdInValue(valueBrute)
+        if(id == "20004"):
+            continue
         team  = soup.get_text()
         clubs.append({
             "Name" : unidecode.unidecode(team),
@@ -40,7 +42,7 @@ def getIdInValue(str):
     return str.split('/')[7]
 
 def writeJsonFile(info):
-    with open("./clubs-ids.json", 'w') as clubs:
+    with open("./clubs.json", 'w') as clubs:
         clubs.write(json.dumps(info))
 
 def main():
@@ -48,8 +50,7 @@ def main():
     selectClubs = getFormWithSelect(page)
     options = getOptions(selectClubs)
     clubs = getClubsIds(options)
-    return clubs
+    writeJsonFile(clubs)
 
 if __name__ == "__main__":
-    clubs = main()
-    writeJsonFile(clubs)
+    main()

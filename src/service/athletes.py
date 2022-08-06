@@ -4,10 +4,11 @@ from xml.dom import EMPTY_NAMESPACE
 from bs4 import BeautifulSoup 
 import json
 import unidecode
+import re
 
 def main():
     clubs = getClubsIds()
-    jsonData = []
+    athletes = []
 
     for club in clubs :
         print(club['Name'])
@@ -16,18 +17,16 @@ def main():
             getTableWithAthlets(page[0]),
             getTableWithAthlets(page[1])
         ]
-        athletes = []
         for page in pages :
             for row in page:
-                athletes.append(extractDataFromTrow(row))
-        jsonData.append(
-            {
-                "Team" : club['Name'],
-                "Athletes" : athletes
-            }
-        )
-    print(jsonData)
-    
+                athletes.append(extractDataFromTrow(row, club['Id']))
+        
+        
+    writeJsonFile(athletes)
+
+def writeJsonFile(info):
+    with open('./athletes.json', 'w') as athletes :
+        athletes.write(json.dumps(info))
 
 def getAthletesFromClub(clubId):    
     soupPageOne = webSiteContent(f'https://www.cbf.com.br/futebol-brasileiro/atletas/campeonato-brasileiro-serie-a/2022/{clubId}')
@@ -36,21 +35,17 @@ def getAthletesFromClub(clubId):
 
     return [soupPageOne, soupPageTwo]
 
-def extractDataFromTrow(trow):
+def extractDataFromTrow(trow, clubId):
     a = trow.find_all('a')
     id      = a[0]['href'].split('/')[5].split('?')[0]
     Nome    = a[0].get_text().split('\n')[1].split('\r')[0].lstrip()
     Apelido = a[1].get_text().split('\n')[1].split('\r')[0].lstrip()
-    print('\n\n\n')
-    print({
-        "id"      : id,
-        "Nome"    : Nome,
-        "Apelido" : Apelido
-    })
+    
     return {
         "id"      : id,
-        "Nome"    : Nome,
-        "Apelido" : Apelido
+        "nome"    : Nome,
+        "apelido" : Apelido,
+        "clubId"  : clubId
     }
     
 
