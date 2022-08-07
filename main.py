@@ -11,12 +11,18 @@ def index():
 
 @app.route("/tabela-brasileirao/hoje", methods=['GET'])
 def tabela():
-    tabela = getTabelaBrasileirao.main()
-    jsonData = json.dumps(tabela)
+    file = open('./src/service/tabela.json').read()
+    jsonData = json.loads(file)
     return jsonData, 200, {'Content-Type': 'application/json;' }
 
-@app.route("/cbf/clubs-ids", methods=["GET"])
-def clubsIds():
-    clubes = clubs.main()
-    jsonData = json.dumps(clubes)
+@app.route("/cbf/clubs", methods=["GET"])
+def clubs():
+    file = open('./src/service/clubs.json').read()
+    jsonData = json.loads(file)
+    return jsonData, 200, {'Content-Type': 'application/json;' }
+
+@app.route("/cbf/athletes", methods=["GET"])
+def athletes():
+    file = open('./src/service/athletes.json').read()
+    jsonData = json.loads(file)
     return jsonData, 200, {'Content-Type': 'application/json;' }
