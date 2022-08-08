@@ -9,9 +9,15 @@ def index():
     file = open('./index.html').read()
     return file, 200, {'Content-Type':'text/html; charset=utf-8'}
 
-@app.route("/tabela-brasileirao/hoje", methods=['GET'])
+@app.route("/uol/tabela-brasileirao/hoje", methods=['GET'])
 def tabela():
     file = open('./src/service/tabela.json').read()
+    jsonData = json.loads(file)
+    return jsonData, 200, {'Content-Type': 'application/json;' }
+
+@app.route('/wiki/tabela-brasileirao/hoje', methods=['GET'])
+def wikiTable():
+    file = open('./src/service/tabela-wiki.json').read()
     jsonData = json.loads(file)
     return jsonData, 200, {'Content-Type': 'application/json;' }
 
